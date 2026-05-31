@@ -2,107 +2,147 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vehicle OSINT</title>
-
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OSINT Mini App</title>
 
 <style>
 body{
-    font-family:Arial;
-    background:#111;
-    color:white;
-    padding:20px;
+margin:0;
+padding:20px;
+font-family:Arial,sans-serif;
+background:#0f172a;
+color:white;
+}
+
+.logo{
+font-size:38px;
+font-weight:bold;
+margin-bottom:25px;
 }
 
 .top{
-    display:flex;
-    gap:10px;
-    margin-bottom:20px;
+display:flex;
+gap:15px;
+margin-bottom:25px;
 }
 
-.btn{
-    background:#0088cc;
-    color:white;
-    border:none;
-    padding:12px;
-    border-radius:8px;
-    width:100%;
-    margin-top:10px;
-    cursor:pointer;
+.top button{
+flex:1;
+padding:15px;
+border:none;
+border-radius:12px;
+font-size:18px;
+color:white;
+background:linear-gradient(90deg,#3b82f6,#9333ea);
 }
 
 .card{
-    background:#222;
-    padding:15px;
-    border-radius:10px;
-    margin-top:15px;
+background:#1e293b;
+border-radius:15px;
+padding:20px;
+margin-bottom:20px;
+}
+
+.service{
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:22px;
+margin-bottom:15px;
+}
+
+.price{
+background:#10b981;
+padding:10px 15px;
+border-radius:8px;
 }
 
 input{
-    width:100%;
-    padding:12px;
-    border-radius:8px;
-    border:none;
-    margin-top:10px;
+width:100%;
+padding:15px;
+font-size:18px;
+border-radius:10px;
+border:none;
+margin-top:15px;
+margin-bottom:15px;
+}
+
+.submit{
+width:100%;
+padding:15px;
+font-size:18px;
+border:none;
+border-radius:10px;
+color:white;
+background:linear-gradient(90deg,#3b82f6,#9333ea);
+}
+.result{
+margin-top:15px;
+background:#111827;
+padding:15px;
+border-radius:10px;
+white-space:pre-wrap;
 }
 </style>
 </head>
 
 <body>
 
+<div class="logo">🔥 Vehicle OSINT</div>
+
 <div class="top">
-    <button class="btn">👤 Profile</button>
-    <button class="btn">💎 Credits: 100</button>
+<button>👤 Profile</button>
+<button>💎 Credits</button>
 </div>
 
 <div class="card">
-    <button class="btn" onclick="showVehicle()">
-        🚗 Vehicle Info
-    </button>
-
-    <button class="btn" onclick="showNumber()">
-        📱 Number Info
-    </button>
+<div class="service">
+<span>📱 Number Details</span>
+<span class="price">₹250</span>
 </div>
 
-<div id="content"></div>
+<input id="number" placeholder="Enter Phone Number">
+
+<button class="submit" onclick="searchNumber()">
+Search Number
+</button>
+
+<div id="numberResult"></div>
+</div>
+
+<div class="card">
+<div class="service">
+<span>🚗 Vehicle Details</span>
+<span class="price">₹200</span>
+</div>
+
+<input id="vehicle" placeholder="AP39AB1234">
+
+<button class="submit" onclick="searchVehicle()">
+Search Vehicle
+</button>
+
+<div id="vehicleResult"></div>
+</div>
 
 <script>
 
-function showVehicle(){
+async function searchNumber(){
 
-document.getElementById("content").innerHTML=`
-<div class="card">
-<h3>Vehicle Search</h3>
+let num =
+document.getElementById("number").value;
 
-<input id="vehicle"
-placeholder="AP39AB1234">
+let api =
+"https://YOUR_API_URL?number="+num;
 
-<button class="btn"
-onclick="searchVehicle()">
-Search
-</button>
-</div>
-`;
+let res = await fetch(api);
 
-}
+let data = await res.json();
 
-function showNumber(){
-
-document.getElementById("content").innerHTML=`
-<div class="card">
-<h3>Number Search</h3>
-
-<input id="number"
-placeholder="9876543210">
-
-<button class="btn"
-onclick="searchNumber()">
-Search
-</button>
-</div>
-`;
+document.getElementById("numberResult").innerHTML =
+'<div class="result">'+
+JSON.stringify(data,null,2)+
+'</div>';
 
 }
 
@@ -118,47 +158,10 @@ let res = await fetch(api);
 
 let data = await res.json();
 
-document.getElementById("content").innerHTML=`
-<div class="card">
-<h3>Vehicle Details</h3>
-
-<p><b>Owner:</b>
-${data.owner}</p>
-
-<p><b>Vehicle:</b>
-${data.vehicle}</p>
-
-<p><b>State:</b>
-${data.state}</p>
-
-<p><b>RC Status:</b>
-${data.status}</p>
-</div>
-`;
-
-}
-
-async function searchNumber(){
-
-let number =
-document.getElementById("number").value;
-
-let api =
-"https://YOUR_API_URL?number="+number;
-
-let res = await fetch(api);
-
-let data = await res.json();
-
-document.getElementById("content").innerHTML=`
-<div class="card">
-<h3>Number Details</h3>
-
-<pre>
-${JSON.stringify(data,null,2)}
-</pre>
-</div>
-`;
+document.getElementById("vehicleResult").innerHTML =
+'<div class="result">'+
+JSON.stringify(data,null,2)+
+'</div>';
 
 }
 
