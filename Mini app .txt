@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vehicle OSINT</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<style>
+body{
+    font-family:Arial;
+    background:#111;
+    color:white;
+    padding:20px;
+}
+
+.top{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.btn{
+    background:#0088cc;
+    color:white;
+    border:none;
+    padding:12px;
+    border-radius:8px;
+    width:100%;
+    margin-top:10px;
+    cursor:pointer;
+}
+
+.card{
+    background:#222;
+    padding:15px;
+    border-radius:10px;
+    margin-top:15px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    border-radius:8px;
+    border:none;
+    margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="top">
+    <button class="btn">👤 Profile</button>
+    <button class="btn">💎 Credits: 100</button>
+</div>
+
+<div class="card">
+    <button class="btn" onclick="showVehicle()">
+        🚗 Vehicle Info
+    </button>
+
+    <button class="btn" onclick="showNumber()">
+        📱 Number Info
+    </button>
+</div>
+
+<div id="content"></div>
+
+<script>
+
+function showVehicle(){
+
+document.getElementById("content").innerHTML=`
+<div class="card">
+<h3>Vehicle Search</h3>
+
+<input id="vehicle"
+placeholder="AP39AB1234">
+
+<button class="btn"
+onclick="searchVehicle()">
+Search
+</button>
+</div>
+`;
+
+}
+
+function showNumber(){
+
+document.getElementById("content").innerHTML=`
+<div class="card">
+<h3>Number Search</h3>
+
+<input id="number"
+placeholder="9876543210">
+
+<button class="btn"
+onclick="searchNumber()">
+Search
+</button>
+</div>
+`;
+
+}
+
+async function searchVehicle(){
+
+let vehicle =
+document.getElementById("vehicle").value;
+
+let api =
+"https://YOUR_API_URL?vehicle="+vehicle;
+
+let res = await fetch(api);
+
+let data = await res.json();
+
+document.getElementById("content").innerHTML=`
+<div class="card">
+<h3>Vehicle Details</h3>
+
+<p><b>Owner:</b>
+${data.owner}</p>
+
+<p><b>Vehicle:</b>
+${data.vehicle}</p>
+
+<p><b>State:</b>
+${data.state}</p>
+
+<p><b>RC Status:</b>
+${data.status}</p>
+</div>
+`;
+
+}
+
+async function searchNumber(){
+
+let number =
+document.getElementById("number").value;
+
+let api =
+"https://YOUR_API_URL?number="+number;
+
+let res = await fetch(api);
+
+let data = await res.json();
+
+document.getElementById("content").innerHTML=`
+<div class="card">
+<h3>Number Details</h3>
+
+<pre>
+${JSON.stringify(data,null,2)}
+</pre>
+</div>
+`;
+
+}
+
+</script>
+
+</body>
+</html>
