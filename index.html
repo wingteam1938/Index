@@ -1,92 +1,164 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>OSINT Mini App</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vehicle OSINT</title>
 
 <style>
-body{
+*{
 margin:0;
-padding:20px;
-font-family:Arial,sans-serif;
-background:#0f172a;
-color:white;
+padding:0;
+box-sizing:border-box;
+font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+}
+
+body{
+background:linear-gradient(180deg,#020617,#07132b);
+color:#fff;
+padding:15px;
+min-height:100vh;
+}
+
+.container{
+max-width:500px;
+margin:auto;
 }
 
 .logo{
-font-size:38px;
-font-weight:bold;
-margin-bottom:25px;
+font-size:42px;
+font-weight:700;
+text-align:center;
+margin:25px 0;
+background:linear-gradient(90deg,#4f8cff,#b44cff);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
 }
 
 .top{
 display:flex;
-gap:15px;
-margin-bottom:25px;
+gap:12px;
+margin-bottom:20px;
 }
 
 .top button{
 flex:1;
-padding:15px;
 border:none;
-border-radius:12px;
+padding:15px;
+border-radius:14px;
 font-size:18px;
-color:white;
-background:linear-gradient(90deg,#3b82f6,#9333ea);
+font-weight:600;
+color:#fff;
+background:linear-gradient(90deg,#4f8cff,#b44cff);
 }
 
 .card{
-background:#1e293b;
-border-radius:15px;
-padding:20px;
-margin-bottom:20px;
+background:rgba(255,255,255,.04);
+backdrop-filter:blur(10px);
+border:1px solid rgba(255,255,255,.08);
+border-radius:20px;
+padding:18px;
+margin-bottom:15px;
 }
 
-.service{
+.row{
 display:flex;
 justify-content:space-between;
 align-items:center;
-font-size:22px;
-margin-bottom:15px;
+}
+
+.title{
+font-size:24px;
+font-weight:600;
 }
 
 .price{
 background:#10b981;
 padding:10px 15px;
-border-radius:8px;
+border-radius:10px;
+font-weight:700;
 }
 
-input{
+.desc{
+color:#94a3b8;
+margin-top:10px;
+line-height:1.5;
+}
+
+.action{
 width:100%;
-padding:15px;
-font-size:18px;
-border-radius:10px;
-border:none;
 margin-top:15px;
+border:none;
+padding:15px;
+border-radius:14px;
+font-size:18px;
+font-weight:600;
+color:#fff;
+background:linear-gradient(90deg,#4f8cff,#b44cff);
+}
+
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.8);
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+
+.modal-box{
+width:100%;
+max-width:400px;
+background:#0f172a;
+padding:20px;
+border-radius:20px;
+}
+
+.modal-box h2{
 margin-bottom:15px;
 }
 
-.submit{
+.modal-box input{
 width:100%;
 padding:15px;
-font-size:18px;
 border:none;
-border-radius:10px;
-color:white;
-background:linear-gradient(90deg,#3b82f6,#9333ea);
+border-radius:12px;
+font-size:17px;
+margin-bottom:15px;
 }
-.result{
-margin-top:15px;
-background:#111827;
+
+.search{
+width:100%;
 padding:15px;
-border-radius:10px;
-white-space:pre-wrap;
+border:none;
+border-radius:12px;
+font-size:18px;
+color:white;
+background:linear-gradient(90deg,#4f8cff,#b44cff);
+}
+
+.close{
+margin-top:10px;
+width:100%;
+padding:12px;
+border:none;
+border-radius:12px;
+background:#1e293b;
+color:white;
+}
+
+.footer{
+text-align:center;
+margin-top:40px;
+color:#94a3b8;
 }
 </style>
 </head>
 
 <body>
+
+<div class="container">
 
 <div class="logo">🔥 Vehicle OSINT</div>
 
@@ -96,53 +168,114 @@ white-space:pre-wrap;
 </div>
 
 <div class="card">
-<div class="service">
-<span>📱 Number Details</span>
-<span class="price">₹250</span>
+<div class="row">
+<div class="title">📱 Number Details</div>
+<div class="price">₹250</div>
 </div>
 
-<input id="number" placeholder="Enter Phone Number">
+<div class="desc">
+Get complete information about any mobile number.
+</div>
 
-<button class="submit" onclick="searchNumber()">
-Search Number
+<button class="action" onclick="openNumber()">
+Search Number →
 </button>
-
-<div id="numberResult"></div>
 </div>
 
 <div class="card">
-<div class="service">
-<span>🚗 Vehicle Details</span>
-<span class="price">₹200</span>
+<div class="row">
+<div class="title">🚗 Vehicle Details</div>
+<div class="price">₹200</div>
 </div>
 
-<input id="vehicle" placeholder="AP39AB1234">
+<div class="desc">
+Get complete information about any vehicle.
+</div>
 
-<button class="submit" onclick="searchVehicle()">
-Search Vehicle
+<button class="action" onclick="openVehicle()">
+Search Vehicle →
+</button>
+</div>
+
+<div class="footer">
+🛡️ Your Data is 100% Safe & Secure
+</div>
+
+</div>
+
+<div class="modal" id="numberModal">
+<div class="modal-box">
+<h2>📱 Number Search</h2>
+
+<input
+id="number"
+placeholder="Enter Mobile Number">
+
+<button
+class="search"
+onclick="searchNumber()">
+Search
 </button>
 
-<div id="vehicleResult"></div>
+<button
+class="close"
+onclick="closeModal()">
+Close
+</button>
+</div>
+</div>
+
+<div class="modal" id="vehicleModal">
+<div class="modal-box">
+<h2>🚗 Vehicle Search</h2>
+
+<input
+id="vehicle"
+placeholder="AP39AB1234">
+
+<button
+class="search"
+onclick="searchVehicle()">
+Search
+</button>
+
+<button
+class="close"
+onclick="closeModal()">
+Close
+</button>
+</div>
 </div>
 
 <script>
 
+function openNumber(){
+document.getElementById("numberModal").style.display="flex";
+}
+
+function openVehicle(){
+document.getElementById("vehicleModal").style.display="flex";
+}
+
+function closeModal(){
+document.getElementById("numberModal").style.display="none";
+document.getElementById("vehicleModal").style.display="none";
+}
+
 async function searchNumber(){
 
-let num =
+let number =
 document.getElementById("number").value;
 
-let api =
-"https://YOUR_API_URL?number="+num;
+alert("API Request For: " + number);
 
-let res = await fetch(api);
+/*
+const res = await fetch(
+'https://YOUR_API?number='+number
+);
 
-let data = await res.json();
-
-document.getElementById("numberResult").innerHTML =
-'<div class="result">'+
-JSON.stringify(data,null,2)+
-'</div>';
+const data = await res.json();
+*/
 
 }
 
@@ -151,17 +284,15 @@ async function searchVehicle(){
 let vehicle =
 document.getElementById("vehicle").value;
 
-let api =
-"https://YOUR_API_URL?vehicle="+vehicle;
+alert("API Request For: " + vehicle);
 
-let res = await fetch(api);
+/*
+const res = await fetch(
+'https://YOUR_API?vehicle='+vehicle
+);
 
-let data = await res.json();
-
-document.getElementById("vehicleResult").innerHTML =
-'<div class="result">'+
-JSON.stringify(data,null,2)+
-'</div>';
+const data = await res.json();
+*/
 
 }
 
